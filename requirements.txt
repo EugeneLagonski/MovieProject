@@ -6,3 +6,6 @@ pyyaml
 sentry-sdk
 gunicorn
 uwsgi
+drf-yasg
+flex
+swagger-spec-validator
