@@ -362,3 +362,12 @@ class MovieDeleteTest(APITestCase):
             'movie-detail',
             kwargs={'pk': 0}))
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+
+class SwaggerTest(APITestCase):
+    def test_swagger(self):
+        response = self.client.get(
+            reverse('schema-json', kwargs={'format': '.yaml'})
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertTrue('swagger' in response.data)
