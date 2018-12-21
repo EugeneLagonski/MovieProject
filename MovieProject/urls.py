@@ -20,12 +20,14 @@ from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 from rest_framework import permissions
 
-schema_view = get_schema_view(
-   openapi.Info(
+swagger_info = openapi.Info(
       title="Movie API",
       default_version='v1',
       description="Test description",
-   ),
+   )
+
+schema_view = get_schema_view(
+   swagger_info,
    validators=['flex', 'ssv'],
    public=True,
    permission_classes=(permissions.AllowAny,),

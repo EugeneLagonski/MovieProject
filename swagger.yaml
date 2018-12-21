@@ -1,0 +1,368 @@
+swagger: '2.0'
+info:
+  title: Movie API
+  description: Test description
+  version: v1
+basePath: /
+consumes:
+  - application/json
+produces:
+  - application/json
+securityDefinitions:
+  Basic:
+    type: basic
+security:
+  - Basic: []
+paths:
+  /actors/:
+    get:
+      operationId: actors_list
+      description: ''
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Actor'
+      tags:
+        - actors
+    post:
+      operationId: actors_create
+      description: ''
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/Actor'
+      responses:
+        '201':
+          description: ''
+          schema:
+            $ref: '#/definitions/Actor'
+      tags:
+        - actors
+    parameters: []
+  /actors/{id}/:
+    get:
+      operationId: actors_read
+      description: ''
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/Actor'
+      tags:
+        - actors
+    put:
+      operationId: actors_update
+      description: ''
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/Actor'
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/Actor'
+      tags:
+        - actors
+    patch:
+      operationId: actors_partial_update
+      description: ''
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/Actor'
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/Actor'
+      tags:
+        - actors
+    delete:
+      operationId: actors_delete
+      description: ''
+      parameters: []
+      responses:
+        '204':
+          description: ''
+      tags:
+        - actors
+    parameters:
+      - name: id
+        in: path
+        description: A unique integer value identifying this actor.
+        required: true
+        type: integer
+  /directors/:
+    get:
+      operationId: directors_list
+      description: ''
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Director'
+      tags:
+        - directors
+    post:
+      operationId: directors_create
+      description: ''
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/Director'
+      responses:
+        '201':
+          description: ''
+          schema:
+            $ref: '#/definitions/Director'
+      tags:
+        - directors
+    parameters: []
+  /directors/{id}/:
+    get:
+      operationId: directors_read
+      description: ''
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/Director'
+      tags:
+        - directors
+    put:
+      operationId: directors_update
+      description: ''
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/Director'
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/Director'
+      tags:
+        - directors
+    patch:
+      operationId: directors_partial_update
+      description: ''
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/Director'
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/Director'
+      tags:
+        - directors
+    delete:
+      operationId: directors_delete
+      description: ''
+      parameters: []
+      responses:
+        '204':
+          description: ''
+      tags:
+        - directors
+    parameters:
+      - name: id
+        in: path
+        description: A unique integer value identifying this director.
+        required: true
+        type: integer
+  /movies/:
+    get:
+      operationId: movies_list
+      description: ''
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Movie'
+      tags:
+        - movies
+    post:
+      operationId: movies_create
+      description: ''
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/Movie'
+      responses:
+        '201':
+          description: ''
+          schema:
+            $ref: '#/definitions/Movie'
+      tags:
+        - movies
+    parameters: []
+  /movies/{id}/:
+    get:
+      operationId: movies_read
+      description: ''
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/Movie'
+      tags:
+        - movies
+    put:
+      operationId: movies_update
+      description: ''
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/Movie'
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/Movie'
+      tags:
+        - movies
+    patch:
+      operationId: movies_partial_update
+      description: ''
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/Movie'
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/Movie'
+      tags:
+        - movies
+    delete:
+      operationId: movies_delete
+      description: ''
+      parameters: []
+      responses:
+        '204':
+          description: ''
+      tags:
+        - movies
+    parameters:
+      - name: id
+        in: path
+        description: A unique integer value identifying this movie.
+        required: true
+        type: integer
+definitions:
+  Actor:
+    required:
+      - name
+    type: object
+    properties:
+      id:
+        title: ID
+        type: integer
+        readOnly: true
+      name:
+        title: Name
+        type: string
+        maxLength: 80
+        minLength: 1
+  Director:
+    required:
+      - name
+    type: object
+    properties:
+      id:
+        title: ID
+        type: integer
+        readOnly: true
+      name:
+        title: Name
+        type: string
+        maxLength: 80
+        minLength: 1
+      movies:
+        type: array
+        items:
+          type: string
+          format: uri
+        readOnly: true
+        uniqueItems: true
+  Role:
+    required:
+      - actor_id
+      - name
+      - character_name
+      - primary
+    type: object
+    properties:
+      actor_id:
+        title: Actor id
+        type: integer
+      name:
+        title: Name
+        type: string
+        minLength: 1
+      character_name:
+        title: Character name
+        type: string
+        maxLength: 80
+        minLength: 1
+      primary:
+        title: Primary
+        type: boolean
+  Movie:
+    required:
+      - title
+      - director
+      - actors
+    type: object
+    properties:
+      id:
+        title: ID
+        type: integer
+        readOnly: true
+      title:
+        title: Title
+        type: string
+        maxLength: 80
+        minLength: 1
+      director:
+        title: Director
+        type: integer
+      actors:
+        type: array
+        items:
+          $ref: '#/definitions/Role'
