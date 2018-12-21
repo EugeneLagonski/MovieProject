@@ -20,7 +20,6 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         self.clean_up()
-        print(options)
         factories.ActorFactory.create_batch(options['actors_count'])
         factories.DirectorFactory.create_batch(options['directors_count'])
         factories.MovieFactory.create_batch(options['movies_count'])
