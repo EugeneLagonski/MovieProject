@@ -38,7 +38,7 @@ To compare likes counter and real number of likes run this command:
 ```
 python3 ./manage.py compare_likes
 ```
-##How to swagger:
+## How to swagger:
 * A JSON view of API specification at /swagger.json
 * A YAML view of API specification at /swagger.yaml
 * A swagger-ui view of API specification at /swagger/
