@@ -206,27 +206,42 @@ class DirectorDeleteTest(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
 
-# class MovieCreateTest(APITestCase):
-#     def setUp(self):
-#         actor1 = models.Actor.objects.create(name='Actor1')
-#         actor2 = models.Actor.objects.create(name='Actor2')
-#         director1 = models.Director.objects.create(name='Director1')
-#         self.valid_movie = {'title': 'Movie', 'director': director1.pk, 'actors': [actor1.pk, actor2.pk]}
-#         self.invalid_movie = {'title': 'Movie', 'director': 0, 'actors': [actor1.pk, actor2.pk]}
-#
-#     def test_create_valid_movie(self):
-#         response = self.client.post(
-#             reverse('movie-list'),
-#             data=json.dumps(self.valid_movie),
-#             content_type='application/json')
-#         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-#
-#     def test_create_invalid_movie(self):
-#         response = self.client.post(
-#             reverse('movie-list'),
-#             data=json.dumps(self.invalid_movie),
-#             content_type='application/json')
-#         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+class MovieCreateTest(APITestCase):
+    def setUp(self):
+        actor1 = models.Actor.objects.create(name='Actor1')
+        actor2 = models.Actor.objects.create(name='Actor2')
+        director1 = models.Director.objects.create(name='Director1')
+        self.valid_movie = {'title': 'Movie', 'director': director1.pk, 'actors': [
+            {'actor_id': actor1.pk,
+             'character_name': 'Character1',
+             'primary': True},
+            {'actor_id': actor2.pk,
+             'character_name': 'Character2',
+             'primary': False}
+        ]}
+        self.invalid_movie = {'title': 'Movie', 'director': 0, 'actors': [
+            {'actor_id': actor1.pk,
+             'character_name': 'Character1',
+             'primary': True},
+            {'actor_id': actor2.pk,
+             'character_name': 'Character2',
+             'primary': False}
+        ]}
+
+    def test_create_valid_movie(self):
+        response = self.client.post(
+            reverse('movie-list'),
+            data=json.dumps(self.valid_movie),
+            content_type='application/json')
+        self.assertEqual(self.valid_movie['title'], response.data['title'])
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+    def test_create_invalid_movie(self):
+        response = self.client.post(
+            reverse('movie-list'),
+            data=json.dumps(self.invalid_movie),
+            content_type='application/json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
 
 class MovieGetAllTest(APITestCase):
@@ -281,41 +296,45 @@ class MovieGetSingleTest(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
 
-# class MovieUpdateTest(APITestCase):
-#     def setUp(self):
-#         actor1 = models.Actor.objects.create(name='Actor1')
-#         actor2 = models.Actor.objects.create(name='Actor2')
-#         actor3 = models.Actor.objects.create(name='Actor3')
-#         director1 = models.Director.objects.create(name='Director1')
-#         director2 = models.Director.objects.create(name='Director2')
-#         self.movie1 = models.Movie.objects.create(title='Movie1', director=director1)
-#         # self.movie1.actors.add(actor1.pk, actor2.pk)
-#         role1 = models.Role.objects.create(movie=self.movie1, actor=actor1, character_name='Character1', primary=True)
-#         role2 = models.Role.objects.create(movie=self.movie1, actor=actor2, character_name='Character2', primary=False)
-#         role_serializer1 = serializers.RoleSerializer(role1)
-#         role_serializer2 = serializers.RoleSerializer(role2)
-#         self.movie2 = models.Movie.objects.create(title='Movie2', director=director2)
-#         # self.movie2.actors.add(actor3.pk, actor2.pk)
-#         models.Role.objects.create(movie=self.movie1, actor=actor3, character_name='Character3', primary=True)
-#         models.Role.objects.create(movie=self.movie1, actor=actor2, character_name='Character4', primary=False)
-#         self.valid_update = {'title': 'NewMovie1', 'director': director2.pk,
-#                              'actors': [role_serializer1.data, role_serializer2.data]}
-#         self.invalid_update = {'title': 'NewMovie1', 'director': 0,
-#                                'actors': [role_serializer1.data, role_serializer2.data]}
-#
-#     def test_valid_update_movie(self):
-#         response = self.client.put(reverse('movie-detail', kwargs={'pk': self.movie1.pk}),
-#                                    data=json.dumps(self.valid_update),
-#                                    content_type='application/json')
-#         serializer = serializers.MovieSerializer(self.movie1, many=True)
-#         self.assertEqual(response.data, serializer.data)
-#         self.assertEqual(response.status_code, status.HTTP_200_OK)
-#
-#     def test_invalid_update_movie(self):
-#         response = self.client.put(reverse('movie-detail', kwargs={'pk': self.movie1.pk}),
-#                                    data=json.dumps(self.invalid_update),
-#                                    content_type='application/json')
-#         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+class MovieUpdateTest(APITestCase):
+    def setUp(self):
+        actor1 = models.Actor.objects.create(name='Actor1')
+        actor2 = models.Actor.objects.create(name='Actor2')
+        actor3 = models.Actor.objects.create(name='Actor3')
+        director1 = models.Director.objects.create(name='Director1')
+        director2 = models.Director.objects.create(name='Director2')
+        self.movie1 = models.Movie.objects.create(title='Movie1', director=director1)
+        models.Role.objects.create(movie=self.movie1, actor=actor1, character_name='Character1', primary=True)
+        role2 = models.Role.objects.create(movie=self.movie1, actor=actor2, character_name='Character2', primary=False)
+        role_serializer2 = serializers.RoleSerializer(role2)
+        role3_raw = {
+            'actor_id': actor3.pk,
+            'character_name': 'Character3',
+            'primary': False
+        }
+        role2_raw = role_serializer2.data
+        role2_raw['primary'] = False
+        self.movie2 = models.Movie.objects.create(title='Movie2', director=director2)
+        models.Role.objects.create(movie=self.movie1, actor=actor3, character_name='Character3', primary=True)
+        self.valid_update = {'title': 'NewMovie1', 'director': director2.pk,
+                             'actors': [role2_raw, role3_raw]}
+        self.invalid_update = {'title': 'NewMovie1', 'director': 0,
+                               'actors': [role2_raw, role3_raw]}
+
+    def test_valid_update_movie(self):
+        response = self.client.put(reverse('movie-detail', kwargs={'pk': self.movie1.pk}),
+                                   data=json.dumps(self.valid_update),
+                                   content_type='application/json')
+        movie = models.Movie.objects.get(pk=self.movie1.pk)
+        serializer = serializers.MovieSerializer(movie)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data, serializer.data)
+
+    def test_invalid_update_movie(self):
+        response = self.client.put(reverse('movie-detail', kwargs={'pk': self.movie1.pk}),
+                                   data=json.dumps(self.invalid_update),
+                                   content_type='application/json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
 
 class MovieDeleteTest(APITestCase):
