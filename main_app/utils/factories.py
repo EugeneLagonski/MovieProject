@@ -22,7 +22,7 @@ class RoleFactory(factory.django.DjangoModelFactory):
         model = models.Role
 
     character_name = factory.Faker('name')
-    primary = factory.Faker('pybool')
+    is_primary = factory.Faker('pybool')
 
 
 class MovieFactory(factory.django.DjangoModelFactory):
