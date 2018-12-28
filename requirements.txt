@@ -3,3 +3,4 @@ djangorestframework
 psycopg2-binary
 factory_boy
 pyyaml
+sentry-sdk
