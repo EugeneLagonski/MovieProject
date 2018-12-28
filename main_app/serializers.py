@@ -27,7 +27,7 @@ class RoleSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Role
-        fields = ('actor_id', 'name', 'character_name', 'primary')
+        fields = ('actor_id', 'name', 'character_name', 'is_primary')
 
 
 class MovieSerializer(serializers.ModelSerializer):
@@ -50,9 +50,9 @@ class MovieSerializer(serializers.ModelSerializer):
                 for actor in actors:
                     actor_id = actor.get('actor_id')
                     character_name = actor.get('character_name')
-                    primary = actor.get('primary')
+                    is_primary = actor.get('is_primary')
                     actor_instance = models.Actor.objects.get(pk=actor_id)
-                    models.Role(movie=movie, actor=actor_instance, character_name=character_name, primary=primary)
+                    models.Role(movie=movie, actor=actor_instance, character_name=character_name, is_primary=is_primary)
             movie.save()
             return movie
         except (models.Director.DoesNotExist, KeyError):
@@ -67,16 +67,16 @@ class MovieSerializer(serializers.ModelSerializer):
                     actor_id = actor.get('actor_id')
                     actor_instance = models.Actor.objects.get(pk=actor_id)
                     character_name = actor.get('character_name')
-                    primary = actor.get('primary')
+                    is_primary = actor.get('is_primary')
                     if actor_id in actors_id_list:
                         role = models.Role.objects.filter(movie=instance, actor=actor_instance)[0]
                         role.character_name = character_name
-                        role.primary = primary
+                        role.is_primary = is_primary
                         i = actors_id_list.index(actor_id)
                         actors_id_list.pop(i)
                         role.save()
                     else:
-                        models.Role(actor=actor, movie=instance, character_name=character_name, primary=primary).save()
+                        models.Role(actor=actor, movie=instance, character_name=character_name, is_primary=is_primary).save()
                 models.Role.objects.filter(actor_id__in=actors_id_list).delete()
             title = validated_data['title']
             director_id = validated_data['director']['id']
