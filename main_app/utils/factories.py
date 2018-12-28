@@ -1,5 +1,6 @@
 import factory
 from main_app import models
+import random
 
 
 class ActorFactory(factory.django.DjangoModelFactory):
@@ -34,7 +35,6 @@ class MovieFactory(factory.django.DjangoModelFactory):
     @factory.post_generation
     def actors(self, create, extracted, **kwargs):
         if create:
-            import random
             roles_count = random.randint(1, models.Actor.objects.count())
             actors = models.Actor.objects.order_by('?')[:roles_count]
             for actor in actors:
