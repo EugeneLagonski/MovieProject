@@ -19,3 +19,10 @@ docker-compose -f docker-compose.yml -f docker-compose.gunicorn.yml up
 ```
 docker-compose -f docker-compose.yml -f docker-compose.uwsgi.yml up
 ```
+
+## Locust testing
+To start the locust server run this command in locust directory:
+```
+docker-compose up --scale locust-worker=<number of workers>
+```
+and locust server will be on http://127.0.0.1:8089/
