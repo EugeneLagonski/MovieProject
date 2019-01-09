@@ -1,0 +1,5 @@
+version: "3"
+
+services:
+  web:
+    command: gunicorn --config config/gunicorn.conf.py MovieProject.wsgi

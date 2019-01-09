@@ -1,0 +1,5 @@
+version: "3"
+
+services:
+  web:
+    command: uwsgi config/uwsgi.ini
