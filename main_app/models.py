@@ -1,3 +1,4 @@
+from django.contrib.auth import get_user_model
 from django.db import models
 from main_app import mixins
 
@@ -20,6 +21,7 @@ class Movie(mixins.Timestamps):
     title = models.CharField(max_length=80)
     director = models.ForeignKey(Director, on_delete=models.CASCADE, related_name='movies')
     actors = models.ManyToManyField(Actor, through='Role', related_name='movies')
+    likes_counter = models.IntegerField(default=0)
 
     def __str__(self):
         return self.title
@@ -33,3 +35,9 @@ class Role(mixins.Timestamps):
 
     def __str__(self):
         return self.character_name
+
+
+class Like(mixins.Timestamps):
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
+    movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
+
