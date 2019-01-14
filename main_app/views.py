@@ -1,4 +1,8 @@
+from django.core.exceptions import PermissionDenied
 from rest_framework import viewsets
+from rest_framework.decorators import action
+from rest_framework.response import Response
+
 from main_app.mixins import LoggingMixin
 from main_app import models
 from main_app import serializers
@@ -17,3 +21,18 @@ class ActorViewSet(LoggingMixin, viewsets.ModelViewSet):
 class MovieViewSet(LoggingMixin, viewsets.ModelViewSet):
     queryset = models.Movie.objects.all()
     serializer_class = serializers.MovieSerializer
+
+    @action(detail=True, methods=['post'], name='Like it')
+    def like(self, request, pk=None):
+        user = request.user
+        if user.is_authenticated:
+            movie = models.Movie.objects.get(pk=pk)
+            try:
+                models.Like.objects.get(movie=movie, user=user)
+            except models.Like.DoesNotExist:
+                like = models.Like(user=user, movie=movie)
+                like.save()
+                movie.likes_counter += 1
+                movie.save()
+            return Response(movie.likes_counter)
+        raise PermissionDenied
