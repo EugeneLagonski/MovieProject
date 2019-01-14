@@ -1,6 +1,7 @@
 import factory
 from main_app import models
 import random
+from django.contrib.auth import get_user_model
 
 
 class ActorFactory(factory.django.DjangoModelFactory):
@@ -39,3 +40,11 @@ class MovieFactory(factory.django.DjangoModelFactory):
             actors = models.Actor.objects.order_by('?')[:roles_count]
             for actor in actors:
                 RoleFactory(actor=actor, movie=self)
+
+
+class UserFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = get_user_model()
+
+    username = factory.Faker('user_name')
+    password = factory.Faker('password', length=10, special_chars=True, digits=True, upper_case=True, lower_case=True)
