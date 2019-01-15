@@ -1,4 +1,6 @@
 import factory
+import faker
+
 from main_app import models
 import random
 from django.contrib.auth import get_user_model
@@ -47,4 +49,15 @@ class UserFactory(factory.django.DjangoModelFactory):
         model = get_user_model()
 
     username = factory.Faker('user_name')
-    password = factory.Faker('password', length=10, special_chars=True, digits=True, upper_case=True, lower_case=True)
+    password = factory.Faker('password', length=10, digits=True, upper_case=True, lower_case=True)
+
+    @classmethod
+    def _create(cls, model_class, *args, **kwargs):
+        password = kwargs['password']
+        username = kwargs['username']
+        with open('testing_users.txt', 'a') as f:
+            f.write('{} {}\n'.format(username, password))
+        instance = super()._create(model_class, *args, **kwargs)
+        instance.set_password(password)
+        instance.save()
+        return instance

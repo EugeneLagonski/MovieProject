@@ -5,6 +5,7 @@ services:
     build: .
     volumes:
       - ./scripts:/scripts
+      - ../:/code
     ports:
       -  8089:8089
   locust-worker:
