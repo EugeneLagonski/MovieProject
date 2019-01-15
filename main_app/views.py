@@ -1,8 +1,8 @@
 from django.core.exceptions import PermissionDenied
+from django.http.response import JsonResponse
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
 from rest_framework import viewsets
-from rest_framework.decorators import action
-from rest_framework.response import Response
-
 from main_app.mixins import LoggingMixin
 from main_app import models
 from main_app import serializers
@@ -22,8 +22,9 @@ class MovieViewSet(LoggingMixin, viewsets.ModelViewSet):
     queryset = models.Movie.objects.all()
     serializer_class = serializers.MovieSerializer
 
-    @action(detail=True, methods=['post'], name='Like it')
-    def like(self, request, pk=None):
+
+def like(request, pk=None):
+    if request.method == "POST":
         user = request.user
         if user.is_authenticated:
             movie = models.Movie.objects.get(pk=pk)
@@ -34,5 +35,5 @@ class MovieViewSet(LoggingMixin, viewsets.ModelViewSet):
                 like.save()
                 movie.likes_counter += 1
                 movie.save()
-            return Response(movie.likes_counter)
+            return JsonResponse({'likes_count': movie.likes_counter})
         raise PermissionDenied
