@@ -3,6 +3,7 @@ from locust import TaskSet
 from locust import task
 import random
 import itertools
+import os
 
 
 class MyTaskSet(TaskSet):
@@ -44,8 +45,10 @@ class GetLocust(HttpLocust):
 
 def read_users():
     users = []
-    with open('/code/testing_users.txt', 'r') as f:
-        users.append(tuple(f.readline().split()))
+    path = os.path.join("code", "testing_users.txt")
+    with open(path, 'r') as f:
+        for line in f:
+            users.append(tuple(line.split()))
     return users
 
 
@@ -58,19 +61,16 @@ class LikeTaskSet(TaskSet):
         self.login()
 
     def login(self):
+        response = self.client.get('/accounts/login')
+        csrftoken = response.cookies['csrftoken']
         user = users_iterator.__next__()
-        self.client.post("/accounts/login", {"username": user[0], "password": user[1]})
+        self.client.post("/accounts/login/", {"username": user[0], "password": user[1]},
+                         headers={"X-CSRFToken": csrftoken})
 
     @task
     def like(self):
-        i = random.randrange(1, 1000)
-        self.client.post("/movies/{}/like".format(i))
-
-    def on_stop(self):
-        self.logout()
-
-    def logout(self):
-        self.client.post("/accounts/logout")
+        i = random.randrange(1, 50)
+        self.client.post("/movies/{}/like/".format(i))
 
 
 class UserLikeLocust(HttpLocust):

@@ -13,3 +13,4 @@ services:
     command: "--master-host=locust-master"
     volumes:
       - ./scripts:/scripts
+      - ../:/code
