@@ -1,8 +1,9 @@
 from django.core.exceptions import PermissionDenied
 from django.http.response import JsonResponse
-from django.utils.decorators import method_decorator
-from django.views.decorators.csrf import csrf_exempt
-from rest_framework import viewsets
+from rest_framework import viewsets, status
+from rest_framework.decorators import action
+from rest_framework.response import Response
+
 from main_app.mixins import LoggingMixin
 from main_app import models
 from main_app import serializers
@@ -16,6 +17,15 @@ class DirectorViewSet(LoggingMixin, viewsets.ModelViewSet):
 class ActorViewSet(LoggingMixin, viewsets.ModelViewSet):
     queryset = models.Actor.objects.all()
     serializer_class = serializers.ActorSerializer
+
+    @action(methods=['get'], detail=True, name='actor-movies')
+    def movies(self, request, pk=None):
+        try:
+            actor = models.Actor.objects.get(pk=pk)
+        except models.Actor.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        serializer = serializers.ActorMoviesSerializer(actor, context={'request': request})
+        return Response(serializer.data)
 
 
 class MovieViewSet(LoggingMixin, viewsets.ModelViewSet):

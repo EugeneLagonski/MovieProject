@@ -4,6 +4,7 @@ from rest_framework.test import APITestCase
 from rest_framework.utils import json
 from main_app import models
 from main_app import serializers
+from main_app.utils import factories
 
 
 class ActorCreateTest(APITestCase):
@@ -103,6 +104,31 @@ class ActorDeleteTest(APITestCase):
         response = self.client.delete(reverse(
             'actor-detail',
             kwargs={'pk': 42}))
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+
+class ActorMovieTest(APITestCase):
+
+    def setUp(self):
+        factories.ActorFactory.create_batch(5)
+        factories.DirectorFactory.create_batch(3)
+        factories.MovieFactory.create_batch(10)
+        self.actor = models.Actor.objects.first()
+
+    def test_valid_actor_movies(self):
+        response = self.client.get(reverse(
+            'actor-movies',
+            kwargs={'pk': self.actor.pk}))
+        serializer = serializers.ActorMoviesSerializer(
+            self.actor, context={'request': response.wsgi_request}, read_only=True)
+
+        self.assertEqual(serializer.data, response.data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_invalid_actor_movies(self):
+        response = self.client.get(reverse(
+            'actor-movies',
+            kwargs={'pk': self.actor.pk - 1}))
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
 
@@ -305,7 +331,8 @@ class MovieUpdateTest(APITestCase):
         director2 = models.Director.objects.create(name='Director2')
         self.movie1 = models.Movie.objects.create(title='Movie1', director=director1)
         models.Role.objects.create(movie=self.movie1, actor=actor1, character_name='Character1', is_primary=True)
-        role2 = models.Role.objects.create(movie=self.movie1, actor=actor2, character_name='Character2', is_primary=False)
+        role2 = models.Role.objects.create(movie=self.movie1, actor=actor2, character_name='Character2',
+                                           is_primary=False)
         role_serializer2 = serializers.RoleSerializer(role2)
         role3_raw = {
             'actor_id': actor3.pk,

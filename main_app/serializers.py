@@ -87,3 +87,24 @@ class MovieSerializer(serializers.ModelSerializer):
             return instance
         except (models.Director.DoesNotExist, KeyError):
             raise ValidationError()
+
+
+class ActorRolesSerializer(serializers.ModelSerializer):
+    movie_title = serializers.ReadOnlyField(source='movie.title')
+    movie_url = serializers.HyperlinkedRelatedField(
+        source='movie',
+        read_only=True,
+        view_name='movie-detail',
+    )
+
+    class Meta:
+        model = models.Role
+        fields = ('character_name', 'is_primary', 'movie_title', 'movie_url')
+
+
+class ActorMoviesSerializer(serializers.ModelSerializer):
+    films = ActorRolesSerializer(source='role_set', many=True, read_only=True)
+
+    class Meta:
+        model = models.Actor
+        fields = ('films',)
