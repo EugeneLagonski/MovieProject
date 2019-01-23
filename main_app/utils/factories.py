@@ -28,12 +28,18 @@ class RoleFactory(factory.django.DjangoModelFactory):
     is_primary = factory.Faker('pybool')
 
 
+def lazy_func():
+    fake = faker.Faker()
+    return fake.random_element(elements=models.Director.objects.all())
+
+
 class MovieFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = models.Movie
 
     title = factory.Faker('sentence', nb_words=3, variable_nb_words=True)
-    director = factory.Iterator(models.Director.objects.all())
+
+    director = factory.LazyFunction(lazy_func)
 
     @factory.post_generation
     def actors(self, create, extracted, **kwargs):

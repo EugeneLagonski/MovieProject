@@ -19,7 +19,7 @@ class Actor(mixins.Timestamps):
 
 class Movie(mixins.Timestamps):
     title = models.CharField(max_length=80)
-    director = models.ForeignKey(Director, on_delete=models.CASCADE, related_name='movies', db_constraint=False)
+    director = models.ForeignKey(Director, on_delete=models.CASCADE, related_name='movies')
     actors = models.ManyToManyField(Actor, through='Role', related_name='movies')
     likes_counter = models.IntegerField(default=0)
 
