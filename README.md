@@ -39,7 +39,12 @@ To compare likes counter and real number of likes run this command:
 python3 ./manage.py compare_likes
 ```
 ## How to swagger:
-* A JSON view of API specification at /swagger.json
-* A YAML view of API specification at /swagger.yaml
-* A swagger-ui view of API specification at /swagger/
-* A ReDoc view of API specification at /redoc/
+You can connect  this views only by port 81
+* A JSON view of API specification at /spec/swagger.json
+* A YAML view of API specification at /spec/swagger.yaml
+* A swagger-ui view of API specification at /spec/swagger/
+* A ReDoc view of API specification at /spec/redoc/
+* You can get API specification locally by using command:
+```
+python ./manage.py generate_swagger swagger.yaml -o
+```

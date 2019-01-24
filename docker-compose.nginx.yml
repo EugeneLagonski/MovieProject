@@ -4,6 +4,7 @@ services:
     image: nginx:latest
     ports:
       - "80:80"
+      - "81:81"
     volumes:
       - .:/code
       - ./config/nginx:/etc/nginx/conf.d

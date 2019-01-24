@@ -322,32 +322,30 @@ definitions:
         uniqueItems: true
   Role:
     required:
-      - actor_id
-      - name
       - character_name
-      - primary
+      - is_primary
     type: object
     properties:
       actor_id:
         title: Actor id
-        type: integer
+        type: string
+        readOnly: true
       name:
         title: Name
         type: string
-        minLength: 1
+        readOnly: true
       character_name:
         title: Character name
         type: string
         maxLength: 80
         minLength: 1
-      primary:
-        title: Primary
+      is_primary:
+        title: Is primary
         type: boolean
   Movie:
     required:
       - title
       - director
-      - actors
     type: object
     properties:
       id:
@@ -366,3 +364,4 @@ definitions:
         type: array
         items:
           $ref: '#/definitions/Role'
+        readOnly: true
