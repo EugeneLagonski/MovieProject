@@ -122,7 +122,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
-
+STATIC_ROOT = 'static/'
 
 sentry_sdk.init(
     dsn="https://7f5aae5c19d64c78b6f05a3a698fc2cd@sentry.io/1360818",
