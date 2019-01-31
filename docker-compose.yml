@@ -12,3 +12,14 @@ services:
       - "8000:8000"
     depends_on:
       - db
+  frontend:
+    build: ./frontend
+    command: npm start
+    volumes:
+      - ./frontend:/frontend
+      - node-modules:/frontend/node-modules
+    ports:
+      - "3000:3000"
+
+volumes:
+  node-modules:

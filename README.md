@@ -25,6 +25,9 @@ To start project with nginx run this command:
 docker-compose -f docker-compose.yml -f <Gunicorn or uwsgi docker-compose file> \
 -f docker-compose.nginx.yml up
 ```
+* Frontend on localhost
+* API on api.localhost
+
 ## Locust testing
 To start the locust server run this command in locust directory:
 ```

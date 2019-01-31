@@ -7,5 +7,7 @@ services:
     volumes:
       - .:/code
       - ./config/nginx:/etc/nginx/conf.d
+      - ./frontend:/frontend
     depends_on:
       - web
+      - frontend

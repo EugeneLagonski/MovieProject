@@ -27,7 +27,7 @@ SECRET_KEY = ')v$8x4t@#bc*s-vi!$)1&ch%7ke2m!1ctn_s0$jm#-q^5ul76^'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['0.0.0.0', 'localhost', '172.17.0.1']
+ALLOWED_HOSTS = ['0.0.0.0', 'localhost', '172.17.0.1', 'api.localhost']
 
 # Application definition
 
@@ -128,3 +128,8 @@ sentry_sdk.init(
     dsn="https://7f5aae5c19d64c78b6f05a3a698fc2cd@sentry.io/1360818",
     integrations=[DjangoIntegration()]
 )
+
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10
+}
