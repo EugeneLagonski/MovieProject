@@ -6,15 +6,12 @@ import {ListGroup, ListGroupItem, Pagination, PaginationItem, PaginationLink} fr
 
 
 export default class MoviesList extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            currentMovies: [],
-            currentPage: parseInt(props.match.params.page || 1),
-            totalMovies: null,
-            pageSize: 10,
-        }
-    }
+    state = {
+        currentMovies: [],
+        currentPage: parseInt(props.match.params.page || 1),
+        totalMovies: null,
+        pageSize: 10,
+    };
 
     fetchData = () => {
         fetch('http://api.localhost/movies/?page=' + this.state.currentPage)

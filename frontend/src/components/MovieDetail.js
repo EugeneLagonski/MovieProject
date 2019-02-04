@@ -7,16 +7,14 @@ import '../css/scroll.css';
 
 
 export default class MoviesList extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            id: props.match.params.movieId,
-            title: null,
-            director: null,
-            directorName: null,
-            actors: null,
-        }
-    }
+    state = {
+        id: props.match.params.movieId,
+        title: null,
+        director: null,
+        directorName: null,
+        actors: null,
+    };
+
 
     fetchData() {
         fetch('http://api.localhost/movies/' + this.state.id)
@@ -57,7 +55,7 @@ export default class MoviesList extends Component {
     }
 
     render() {
-        const {title, director, directorName, actors} = this.state
+        const {title, director, directorName, actors} = this.state;
         return (
             <Card>
                 <CardBody>

@@ -4,13 +4,10 @@ import 'whatwg-fetch'
 import {Card, CardBody, CardSubtitle, CardText, CardTitle} from "reactstrap";
 
 export default class ActorDetail extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            id: props.match.params.directorId,
-            name: null
-        }
-    }
+    state = {
+        id: props.match.params.directorId,
+        name: null
+    };
 
     fetchData() {
         fetch('http://api.localhost/director/' + this.state.id)
