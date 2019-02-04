@@ -1,23 +1,26 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 import 'whatwg-fetch'
+import {API_URL, LOADING} from "../constants";
 
-import {Card, CardBody, CardSubtitle, CardText, CardTitle, ListGroup, ListGroupItem, Badge} from "reactstrap";
+import ActorsContainer from "./ActorsContainer";
+
+import {Card, CardBody, CardSubtitle, CardTitle} from "reactstrap";
 import '../css/scroll.css';
 
 
 export default class MoviesList extends Component {
+
     state = {
-        id: props.match.params.movieId,
         title: null,
         director: null,
         directorName: null,
         actors: null,
+        isLoading: true
     };
 
-
-    fetchData() {
-        fetch('http://api.localhost/movies/' + this.state.id)
+    fetchData = () => {
+        fetch(`${API_URL}/movies/${this.props.match.params.movieId}`)
             .then(res => res.json())
             .then((data) => {
                 console.log('Request success', data);
@@ -25,11 +28,11 @@ export default class MoviesList extends Component {
                     return actor2.is_primary - actor1.is_primary
                 });
                 this.setState(data);
-                fetch('http://api.localhost/directors/' + this.state.director)
+                fetch(`${API_URL}/directors/${this.state.director}`)
                     .then(res => res.json())
                     .then((data) => {
                         console.log('Request success', data);
-                        this.setState({directorName: data.name});
+                        this.setState({directorName: data.name, isLoading: false});
                     })
                     .catch((error) => {
                         console.log('Request failed', error);
@@ -38,44 +41,25 @@ export default class MoviesList extends Component {
             .catch((error) => {
                 console.log('Request failed', error);
             });
-
     };
-
 
     componentDidMount() {
         console.log('Page created');
         this.fetchData()
     }
 
-    componentDidUpdate(prevProps, prevState, snapshot) {
-        if (prevState.currentPage !== this.state.currentPage) {
-            console.log('Page updated');
-            this.fetchData()
-        }
-    }
-
     render() {
         const {title, director, directorName, actors} = this.state;
-        return (
+        if (this.state.isLoading) return LOADING;
+        else return (
             <Card>
                 <CardBody>
                     <CardTitle>Movie: {title}</CardTitle>
                     <CardSubtitle>Director:&ensp;
                         <Link to={/director/ + director}>{directorName}</Link>
                     </CardSubtitle>
-                    <CardText>Actors:
-                        <ListGroup className='col-md-4 scroller'>
-                            {actors && actors.map(actor => {
-                                return (
-                                    <ListGroupItem key={actor.id}>
-                                        <Link to={/actor/ + actor.id}>{actor.name}</Link>
-                                        {actor.is_primary && <Badge color='secondary'>Primary role</Badge>}
-                                        &ensp;as {actor.character_name}
-                                    </ListGroupItem>
-                                )
-                            })}
-                        </ListGroup>
-                    </CardText>
+                    Actors:
+                    <ActorsContainer actors={actors}/>
                 </CardBody>
             </Card>
         )

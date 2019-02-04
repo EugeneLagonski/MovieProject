@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {BrowserRouter as Router, Route, Redirect} from "react-router-dom";
+import {BrowserRouter as Router, Route} from "react-router-dom";
 import {Switch} from "react-router";
 
 import registerServiceWorker from './registerServiceWorker';
@@ -11,6 +11,7 @@ import MoviesList from "./components/MoviesList";
 import MovieDetail from "./components/MovieDetail";
 import ActorDetail from "./components/ActorDetail";
 import DirectorDetail from "./components/DirectorDetail";
+import ReRenderRouter from "./components/ReRenderRouter";
 
 import './css/index.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -21,8 +22,8 @@ ReactDOM.render(
         <div>
             <MyNavbar/>
             <Switch>
-                <Route path="/movies/:page" component={MoviesList}/>
-                <Route path="/movies/" component={() => <Redirect to='/movies/1' push={true}/>}/>
+                <ReRenderRouter path="/movies/:page" component={MoviesList} RouteKey={true}/>
+                <Route path="/movies/" component={MoviesList}/>}/>
                 <Route path="/movie/:movieId" component={MovieDetail}/>
                 <Route path="/actor/:actorId" component={ActorDetail}/>
                 <Route path="/director/:directorId" component={DirectorDetail}/>

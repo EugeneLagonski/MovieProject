@@ -1,20 +1,23 @@
 import React, {Component} from 'react';
 import 'whatwg-fetch'
+import {API_URL, LOADING} from '../constants'
 
 import {Card, CardBody, CardSubtitle, CardText, CardTitle} from "reactstrap";
 
+
 export default class ActorDetail extends Component {
+
     state = {
-        id: props.match.params.actorId,
-        name: null
+        name: null,
+        isLoading: true
     };
 
-    fetchData() {
-        fetch('http://api.localhost/actors/' + this.state.id)
+    fetchData = () => {
+        fetch(`${API_URL}/actors/${this.props.match.params.actorId}`)
             .then(res => res.json())
             .then((data) => {
                 console.log('Request success', data);
-                this.setState(data);
+                this.setState({name: data.name, isLoading: false});
             })
             .catch((error) => {
                 console.log('Request failed', error);
@@ -22,30 +25,23 @@ export default class ActorDetail extends Component {
 
     };
 
-
     componentDidMount() {
         console.log('Page created');
         this.fetchData()
     }
 
-    componentDidUpdate(prevProps, prevState, snapshot) {
-        if (prevState.currentPage !== this.state.currentPage) {
-            console.log('Page updated');
-            this.fetchData()
-        }
-    }
-
     render() {
         const {name} = this.state;
-        return (
+        if (this.state.isLoading) return LOADING;
+        else return (
             <Card>
                 <CardBody>
                     <CardTitle>Actor: {name}</CardTitle>
-                    <CardSubtitle>Additional info:&ensp;
-                        <p>to be realised</p>
+                    <CardSubtitle>Additional info:<br/>
+                        to be realised
                     </CardSubtitle>
-                    <CardText>Actors:
-                        <p>to be realised</p>
+                    <CardText>Actor main info:<br/>
+                        to be realised
                     </CardText>
                 </CardBody>
             </Card>

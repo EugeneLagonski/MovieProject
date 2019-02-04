@@ -1,27 +1,30 @@
 import React, {Component} from 'react';
-import {Link} from 'react-router-dom';
 import 'whatwg-fetch'
+import {API_URL, LOADING} from "../constants";
 
-import {ListGroup, ListGroupItem, Pagination, PaginationItem, PaginationLink} from 'reactstrap';
+import MyPagination from "./MyPagination";
+import MoviesContainer from "./MoviesContainer";
 
 
 export default class MoviesList extends Component {
+
     state = {
         currentMovies: [],
-        currentPage: parseInt(props.match.params.page || 1),
         totalMovies: null,
         pageSize: 10,
+        isLoading: true
     };
 
     fetchData = () => {
-        fetch('http://api.localhost/movies/?page=' + this.state.currentPage)
+        fetch(`${API_URL}/movies/?page=${parseInt(this.props.match.params.page || 1)}`)
             .then(res => res.json())
             .then((data) => {
                 console.log('Request success');
                 this.setState({
                     currentMovies: data.results,
                     totalMovies: data.count,
-                    totalPages: Math.ceil(data.count / this.state.pageSize)
+                    totalPages: Math.ceil(data.count / this.state.pageSize),
+                    isLoading: false
                 });
             })
             .catch((error) => {
@@ -29,73 +32,19 @@ export default class MoviesList extends Component {
             });
     };
 
-
     componentDidMount() {
         console.log('Page created');
         this.fetchData()
     }
 
-    componentDidUpdate(prevProps, prevState, snapshot) {
-        if (prevState.currentPage !== this.state.currentPage) {
-            console.log('Page updated');
-            this.fetchData()
-        }
-    }
-
-
-    generatePages = (currentPage, totalPages, indent = 2) => { // 2*indent + 1 >= totalPages
-        let center = currentPage;
-        //start
-        let offset = center - 1 - indent;
-        if (offset < 0) {
-            center -= offset;
-        }
-        //end
-        offset = center + indent - totalPages;
-        if (offset > 0) {
-            center -= offset;
-        }
-        const length = 2 * indent + 1;
-        return Array.from({length}, (_, i) => center - indent + i);
-    };
-
-
     render() {
-        const {currentPage, totalPages, currentMovies} = this.state;
-        return (
+        const {totalPages, currentMovies} = this.state;
+        const currentPage = parseInt(this.props.match.params.page || 1);
+        if (this.state.isLoading) return LOADING;
+        else return (
             <div className="MoviesList">
-                <ListGroup className="col-sm-6 col-md-4 offset-md-4 sm-offset-3">
-                    {currentMovies.map(movie => {
-                        return (
-                            <ListGroupItem key={movie.id}>
-                                <Link className='text-dark' to={"/movie/" + movie.id}>
-                                    {movie.title}
-                                </Link>
-                            </ListGroupItem>
-                        )
-                    })}
-                </ListGroup>
-
-                <Pagination className='d-flex justify-content-center'>
-                    <PaginationItem disabled={currentPage === 1}>
-                        <PaginationLink previous tag={Link} to={"/movies/" + (currentPage - 1)}
-                                        onClick={() => this.setState({currentPage: currentPage - 1})}/>
-
-                    </PaginationItem>
-                    {this.generatePages(currentPage, totalPages).map(page => {
-                        return (
-                            <PaginationItem active={currentPage === page} key={page}>
-                                <PaginationLink tag={Link} to={"/movies/" + page}
-                                                onClick={() => this.setState({currentPage: page})}>
-                                    {page}</PaginationLink>
-                            </PaginationItem>
-                        )
-                    })}
-                    <PaginationItem disabled={currentPage === totalPages}>
-                        <PaginationLink next tag={Link} to={"/movies/" + (currentPage + 1)}
-                                        onClick={() => this.setState({currentPage: currentPage + 1})}/>
-                    </PaginationItem>
-                </Pagination>
+                <MoviesContainer movies={currentMovies}/>
+                <MyPagination currentPage={currentPage} totalPages={totalPages} path={"/movies/"}/>
             </div>
         );
     }
