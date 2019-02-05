@@ -5,7 +5,7 @@ import {API_URL, LOADING} from '../constants'
 import {Card, CardBody, CardSubtitle, CardText, CardTitle} from "reactstrap";
 
 
-export default class ActorDetail extends Component {
+export default class ActorContainer extends Component {
 
     state = {
         name: null,

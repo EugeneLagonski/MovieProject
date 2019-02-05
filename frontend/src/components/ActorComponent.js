@@ -5,7 +5,7 @@ import {ActorListItem} from "./ActorListItem"
 import {ListGroup} from "reactstrap";
 
 
-export default class ActorsContainer extends Component {
+export default class ActorComponent extends Component {
     render() {
         return (
             <ListGroup className='col-md-4 scroller'>

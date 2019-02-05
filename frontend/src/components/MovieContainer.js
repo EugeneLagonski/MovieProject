@@ -3,13 +3,13 @@ import {Link} from 'react-router-dom';
 import 'whatwg-fetch'
 import {API_URL, LOADING} from "../constants";
 
-import ActorsContainer from "./ActorsContainer";
+import ActorComponent from "./ActorComponent";
 
 import {Card, CardBody, CardSubtitle, CardTitle} from "reactstrap";
 import '../css/scroll.css';
 
 
-export default class MoviesList extends Component {
+export default class MoviesContainer extends Component {
 
     state = {
         title: null,
@@ -59,7 +59,7 @@ export default class MoviesList extends Component {
                         <Link to={/director/ + director}>{directorName}</Link>
                     </CardSubtitle>
                     Actors:
-                    <ActorsContainer actors={actors}/>
+                    <ActorComponent actors={actors}/>
                 </CardBody>
             </Card>
         )

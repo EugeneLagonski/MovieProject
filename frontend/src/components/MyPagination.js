@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
-import {Pagination, PaginationItem, PaginationLink} from "reactstrap";
 import {Link} from "react-router-dom";
 
+import {Pagination, PaginationItem, PaginationLink} from "reactstrap";
 
 export default class MyPagination extends Component {
 

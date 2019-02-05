@@ -3,7 +3,7 @@ import 'whatwg-fetch'
 import {API_URL, LOADING} from "../constants";
 
 import MyPagination from "./MyPagination";
-import MoviesContainer from "./MoviesContainer";
+import MoviesComponent from "./MoviesComponent";
 
 
 export default class MoviesList extends Component {
@@ -43,7 +43,7 @@ export default class MoviesList extends Component {
         if (this.state.isLoading) return LOADING;
         else return (
             <div className="MoviesList">
-                <MoviesContainer movies={currentMovies}/>
+                <MoviesComponent movies={currentMovies}/>
                 <MyPagination currentPage={currentPage} totalPages={totalPages} path={"/movies/"}/>
             </div>
         );

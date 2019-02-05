@@ -7,9 +7,9 @@ import registerServiceWorker from './registerServiceWorker';
 
 import App from './components/App';
 import MyNavbar from './components/MyNavbar'
-import MoviesList from "./components/MoviesList";
-import MovieDetail from "./components/MovieDetail";
-import ActorDetail from "./components/ActorDetail";
+import MoviesContainer from "./components/MoviesList";
+import MovieDetail from "./components/MovieContainer";
+import ActorContainer from "./components/ActorContainer";
 import DirectorDetail from "./components/DirectorDetail";
 import ReRenderRouter from "./components/ReRenderRouter";
 
@@ -22,10 +22,10 @@ ReactDOM.render(
         <div>
             <MyNavbar/>
             <Switch>
-                <ReRenderRouter path="/movies/:page" component={MoviesList} RouteKey={true}/>
-                <Route path="/movies/" component={MoviesList}/>}/>
+                <ReRenderRouter path="/movies/:page" component={MoviesContainer} RouteKey={true}/>
+                <Route path="/movies/" component={MoviesContainer}/>}/>
                 <Route path="/movie/:movieId" component={MovieDetail}/>
-                <Route path="/actor/:actorId" component={ActorDetail}/>
+                <Route path="/actor/:actorId" component={ActorContainer}/>
                 <Route path="/director/:directorId" component={DirectorDetail}/>
                 <Route exact path="/" component={App}/>
             </Switch>
