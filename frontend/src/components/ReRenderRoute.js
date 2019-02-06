@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {Route} from 'react-router-dom';
 
 
-export default class ReRenderRouter extends Component {
+export default class ReRenderRoute extends Component {
     render() {
         const {component: Component, RouteKey, location, ...rest} = this.props;
         const Key = RouteKey ? location.pathname + location.search : null;
