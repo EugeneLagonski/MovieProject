@@ -30,7 +30,13 @@ class RoleSerializer(serializers.ModelSerializer):
         fields = ('actor_id', 'name', 'character_name', 'is_primary')
 
 
-class MovieSerializer(serializers.ModelSerializer):
+class MovieListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Movie
+        fields = ('id', 'title')
+
+
+class MovieDetailSerializer(serializers.ModelSerializer):
     actors = RoleSerializer(source='role_set', many=True, read_only=True)
     director = serializers.IntegerField(source='director.id')
 
@@ -76,7 +82,8 @@ class MovieSerializer(serializers.ModelSerializer):
                         actors_id_list.pop(i)
                         role.save()
                     else:
-                        models.Role(actor=actor, movie=instance, character_name=character_name, is_primary=is_primary).save()
+                        models.Role(actor=actor, movie=instance, character_name=character_name,
+                                    is_primary=is_primary).save()
                 models.Role.objects.filter(actor_id__in=actors_id_list).delete()
             title = validated_data['title']
             director_id = validated_data['director']['id']

@@ -1,7 +1,5 @@
 from django.core.exceptions import PermissionDenied
 from django.http.response import JsonResponse
-from django.utils.decorators import method_decorator
-from django.views.decorators.csrf import csrf_exempt
 from rest_framework import viewsets
 from main_app.mixins import LoggingMixin
 from main_app import models
@@ -20,7 +18,14 @@ class ActorViewSet(LoggingMixin, viewsets.ModelViewSet):
 
 class MovieViewSet(LoggingMixin, viewsets.ModelViewSet):
     queryset = models.Movie.objects.all()
-    serializer_class = serializers.MovieSerializer
+    serializer_class = serializers.MovieDetailSerializer
+    list_serializer_class = serializers.MovieListSerializer
+
+    def get_serializer_class(self):
+        if self.action == 'list':
+            if hasattr(self, 'list_serializer_class'):
+                return self.list_serializer_class
+        return super().get_serializer_class()
 
 
 def like(request, pk=None):

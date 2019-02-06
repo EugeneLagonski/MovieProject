@@ -261,7 +261,7 @@ class MovieGetAllTest(APITestCase):
     def test_get_all_movies(self):
         response = self.client.get(reverse('movie-list'))
         movies = models.Movie.objects.all()
-        serializer = serializers.MovieSerializer(movies, many=True)
+        serializer = serializers.MovieDetailSerializer(movies, many=True)
         self.assertEqual(response.data, serializer.data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
@@ -285,7 +285,7 @@ class MovieGetSingleTest(APITestCase):
             'movie-detail',
             kwargs={'pk': self.movie2.pk}))
         movie = models.Movie.objects.get(pk=self.movie2.pk)
-        serializer = serializers.MovieSerializer(movie)
+        serializer = serializers.MovieDetailSerializer(movie)
         self.assertEqual(response.data, serializer.data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
@@ -326,7 +326,7 @@ class MovieUpdateTest(APITestCase):
                                    data=json.dumps(self.valid_update),
                                    content_type='application/json')
         movie = models.Movie.objects.get(pk=self.movie1.pk)
-        serializer = serializers.MovieSerializer(movie)
+        serializer = serializers.MovieDetailSerializer(movie)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data, serializer.data)
 
