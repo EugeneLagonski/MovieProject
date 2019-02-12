@@ -10,5 +10,7 @@ router.register('movies', views.MovieViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
-    path('movies/<pk>/like/', csrf_exempt(views.like))
+    path('movies/<pk>/like/', csrf_exempt(views.like)),
+    path('auth/register/', views.RegistrationAPI.as_view()),
+    path('auth/login/', views.LoginAPI.as_view()),
 ]

@@ -6,3 +6,5 @@ pyyaml
 sentry-sdk
 gunicorn
 uwsgi
+django-cors-headers
+django-rest-knox

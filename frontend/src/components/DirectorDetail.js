@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import 'whatwg-fetch'
+import axios from "axios";
 import {API_URL, LOADING} from '../constants'
 
 import {Card, CardBody, CardSubtitle, CardText, CardTitle} from "reactstrap";
@@ -13,9 +13,8 @@ export default class ActorDetail extends Component {
     };
 
     fetchData = () => {
-        fetch(`${API_URL}/directors/${this.props.match.params.directorId}`)
-            .then(res => res.json())
-            .then((data) => {
+        axios.get(`${API_URL}/directors/${this.props.match.params.directorId}`)
+            .then(({data}) => {
                 console.log('Request success', data);
                 data.isLoading = false;
                 this.setState(data);

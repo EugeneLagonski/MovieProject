@@ -17,7 +17,6 @@ export default class MyPagination extends Component {
         if (offset > 0) {
             center -= offset;
         }
-
         const length = 2 * indent + 1;
         return Array.from({length}, (_, i) => center - indent + i);
     };

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import 'whatwg-fetch'
+import axios from "axios";
 import {API_URL, LOADING} from "../constants";
 
 import MyPagination from "./MyPagination";
@@ -16,9 +16,8 @@ export default class MoviesList extends Component {
     };
 
     fetchData = () => {
-        fetch(`${API_URL}/movies/?page=${parseInt(this.props.match.params.page || 1)}`)
-            .then(res => res.json())
-            .then((data) => {
+        axios.get(`${API_URL}/movies/?page=${parseInt(this.props.match.params.page || 1)}`)
+            .then(({data}) => {
                 console.log('Request success');
                 this.setState({
                     currentMovies: data.results,
