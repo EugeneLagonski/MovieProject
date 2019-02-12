@@ -27,10 +27,11 @@ class MovieListSerializer(serializers.ModelSerializer):
 class MovieDetailSerializer(serializers.ModelSerializer):
     actors = RoleSerializer(source='role_set', many=True, read_only=True)
     director = serializers.IntegerField(source='director.id')
+    director_name = serializers.CharField(source='director.name')
 
     class Meta:
         model = models.Movie
-        fields = ('id', 'title', 'director', 'actors')
+        fields = ('id', 'title', 'director', 'director_name', 'actors')
         depth = 1
 
     def create(self, validated_data):
