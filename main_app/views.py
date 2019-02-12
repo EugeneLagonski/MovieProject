@@ -8,7 +8,7 @@ from main_app import serializers
 
 class DirectorViewSet(LoggingMixin, viewsets.ModelViewSet):
     queryset = models.Director.objects.all()
-    serializer_class = serializers.DirectorSerializer
+    serializer_class = serializers.DirectorDetailSerializer
 
 
 class ActorViewSet(LoggingMixin, viewsets.ModelViewSet):

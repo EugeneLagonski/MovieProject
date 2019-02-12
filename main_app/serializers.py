@@ -3,18 +3,6 @@ from main_app import models
 from rest_framework.exceptions import ValidationError
 
 
-class DirectorSerializer(serializers.HyperlinkedModelSerializer):
-    movies = serializers.HyperlinkedIdentityField(
-        many=True,
-        read_only=True,
-        view_name='movie-detail',
-    )
-
-    class Meta:
-        model = models.Director
-        fields = ('id', 'name', 'movies')
-
-
 class ActorSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Actor
@@ -94,3 +82,11 @@ class MovieDetailSerializer(serializers.ModelSerializer):
             return instance
         except (models.Director.DoesNotExist, KeyError):
             raise ValidationError()
+
+
+class DirectorDetailSerializer(serializers.ModelSerializer):
+    movies = MovieListSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = models.Director
+        fields = ('id', 'name', 'movies')

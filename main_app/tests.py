@@ -137,7 +137,7 @@ class DirectorGetAllTest(APITestCase):
     def test_get_all_director(self):
         response = self.client.get(reverse('director-list'))
         directors = models.Director.objects.all()
-        serializer = serializers.DirectorSerializer(directors, many=True)
+        serializer = serializers.DirectorDetailSerializer(directors, many=True)
         self.assertEqual(response.data, serializer.data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
@@ -154,7 +154,7 @@ class DirectorGetSingleTest(APITestCase):
             'director-detail',
             kwargs={'pk': self.director3.pk}))
         director = models.Director.objects.get(pk=self.director3.pk)
-        serializer = serializers.DirectorSerializer(director)
+        serializer = serializers.DirectorDetailSerializer(director)
         self.assertEqual(response.data, serializer.data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
@@ -178,7 +178,7 @@ class DirectorUpdateTest(APITestCase):
                                    content_type='application/json')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         director = models.Director.objects.get(id=self.director1.pk)
-        serializer = serializers.DirectorSerializer(director)
+        serializer = serializers.DirectorDetailSerializer(director)
         self.assertEqual(response.data, serializer.data)
 
     def test_invalid_update_director(self):
