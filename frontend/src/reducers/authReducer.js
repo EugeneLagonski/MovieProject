@@ -1,14 +1,13 @@
-const initialState = {
+export const initialState = {
     token: localStorage.getItem("token"),
     isAuthenticated: false,
-    isLoading: true,
+    isLoading: false,
     user: null,
     errors: {},
 };
 
 
-export default function auth(state = initialState, action) {
-
+export const authReducer = (state = initialState, action) => {
     switch (action.type) {
         case 'LOGIN_SUCCESSFUL':
         case 'REGISTRATION_SUCCESSFUL':
@@ -28,4 +27,4 @@ export default function auth(state = initialState, action) {
         default:
             return state;
     }
-}
+};

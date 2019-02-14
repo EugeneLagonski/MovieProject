@@ -1,9 +1,9 @@
 import React, {Component} from 'react'
 import {Link} from "react-router-dom";
-
-import {auth} from '../actions';
 import PropTypes from "prop-types";
-import connect from "react-redux/es/connect/connect";
+import {connect} from "react-redux";
+import {auth} from '../actions';
+
 
 class RegisterComponent extends Component {
 

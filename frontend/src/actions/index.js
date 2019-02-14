@@ -1,3 +1,4 @@
-import * as auth from "./auth";
+import * as auth from "./authActions";
+import * as data from "./dataActions"
 
-export {auth}
+export {auth, data}

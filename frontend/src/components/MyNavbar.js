@@ -3,9 +3,9 @@ import {Link} from 'react-router-dom';
 import {withRouter} from "react-router";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
+import {auth} from "../actions/";
 
 import {Navbar, NavbarBrand, Nav, NavItem, NavLink} from 'reactstrap';
-import * as auth from "../actions/auth";
 
 
 class MyNavbar extends React.Component {

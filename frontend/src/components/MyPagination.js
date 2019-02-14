@@ -3,6 +3,7 @@ import {Link} from "react-router-dom";
 
 import {Pagination, PaginationItem, PaginationLink} from "reactstrap";
 
+
 export default class MyPagination extends Component {
 
      generatePages = (currentPage, totalPages, indent = 2) => { // 2*indent + 1 >= totalPages

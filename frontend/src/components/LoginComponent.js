@@ -4,6 +4,7 @@ import {connect} from "react-redux";
 import {auth} from '../actions';
 import PropTypes from 'prop-types';
 
+
 class LoginComponent extends Component {
     state = {
         username: '',

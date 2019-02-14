@@ -9,9 +9,9 @@ import registerServiceWorker from './registerServiceWorker';
 
 import App from './components/App';
 import MyNavbar from './components/MyNavbar'
-import MoviesContainer from "./components/MoviesList";
-import MovieDetail from "./components/MovieContainer";
-import ActorContainer from "./components/ActorContainer";
+import MoviesContainer from "./components/MoviesPaginated";
+import MovieDetail from "./components/MovieDetail";
+import ActorDetail from "./components/ActorDetail";
 import DirectorDetail from "./components/DirectorDetail";
 import ReRenderRoute from "./components/ReRenderRoute";
 import LoginComponent from "./components/LoginComponent";
@@ -30,7 +30,7 @@ ReactDOM.render(
                     <ReRenderRoute path="/movies/:page" component={MoviesContainer} RouteKey={true}/>
                     <Route path="/movies" component={MoviesContainer}/>}/>
                     <Route path="/movie/:movieId" component={MovieDetail}/>
-                    <Route path="/actor/:actorId" component={ActorContainer}/>
+                    <Route path="/actor/:actorId" component={ActorDetail}/>
                     <Route path="/director/:directorId" component={DirectorDetail}/>
                     <Route path="/login" component={LoginComponent}/>
                     <Route path="/register" component={RegisterComponent}/>

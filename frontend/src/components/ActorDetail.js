@@ -8,36 +8,36 @@ import {LOADING} from '../constants'
 import {Card, CardBody, CardSubtitle, CardText, CardTitle} from "reactstrap";
 
 
-class DirectorDetail extends Component {
+class ActorDetail extends Component {
 
     state = {
         isLoading: true
     };
 
     componentDidMount() {
-        const {directors, match, fetchDetailDirector} = this.props;
+        const {actors, match, fetchDetailActor} = this.props;
 
-        if (directors && directors[match.params.directorId] && !directors[match.params.directorId].directors)
-            fetchDetailDirector(match.params.directorId)
+        if (actors && actors[match.params.actorId] && !actors[match.params.actorId].actors)
+            fetchDetailActor(match.params.actorId)
                 .then(() => this.setState({isLoading: false}));
 
         else {
-            fetchDetailDirector(match.params.directorId)
+            fetchDetailActor(match.params.actorId)
                 .then(() => this.setState({isLoading: false}))
         }
     }
 
     render() {
-        const director = this.props.directors[this.props.match.params.directorId];
-        const {name} = director || {};
+        const actor = this.props.actors[this.props.match.params.actorId];
+        const {name} = actor || {};
         return (
             <Card>
                 <CardBody>
-                    <CardTitle>Director: {name}</CardTitle>
+                    <CardTitle>Actor: {name}</CardTitle>
                     <CardSubtitle>Additional info:<br/>
                         to be realised
                     </CardSubtitle>
-                    <CardText>Director main info:<br/>
+                    <CardText>Actor main info:<br/>
                         to be realised
                     </CardText>
                 </CardBody>
@@ -47,23 +47,23 @@ class DirectorDetail extends Component {
     }
 }
 
-DirectorDetail.propTypes = {
-    fetchDetailDirector: PropTypes.func.isRequired,
-    directors: PropTypes.object,
+ActorDetail.propTypes = {
+    fetchDetailActor: PropTypes.func.isRequired,
+    actors: PropTypes.object,
 };
 
 const mapStateToProps = state => {
     return {
-        directors: state.data.directors,
+        actors: state.data.actors,
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        fetchDetailDirector: (id) => {
-            return dispatch(data.fetchDetailDirector(id));
+        fetchDetailActor: (id) => {
+            return dispatch(data.fetchDetailActor(id));
         }
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(DirectorDetail);
+export default connect(mapStateToProps, mapDispatchToProps)(ActorDetail);
