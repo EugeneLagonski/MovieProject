@@ -6,7 +6,7 @@ import {data} from '../actions'
 import MyPagination from "./MyPagination";
 import MoviesPageItems from "./MoviesPageItems";
 
-import {LOADING} from "../constants";
+import {Loading} from "./Loading";
 
 
 class MoviesPaginated extends Component {
@@ -18,16 +18,15 @@ class MoviesPaginated extends Component {
     componentDidMount() {
         this.props.fetchMoviePage(this.props.match.params.page)
             .then(() => this.setState({isLoading: false}))
-
     }
 
     render() {
-        const {currentPage, items, totalItems} = this.props.pagination;
+        const {items} = this.props.pagination;
         return (
             <div className="MoviesList">
                 <MoviesPageItems items={items}/>
-                <MyPagination currentPage={currentPage} totalPages={Math.ceil(totalItems / 10)} path={"/movies/"}/>
-                {this.state.isLoading && LOADING}
+                <MyPagination path={"/movies/"}/>
+                {this.state.isLoading && <Loading/>}
             </div>
         );
     }

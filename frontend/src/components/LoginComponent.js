@@ -28,7 +28,7 @@ class LoginComponent extends Component {
 
     render() {
         const {username, password, submitted} = this.state;
-        if (this.props.isAuthenticated) window.history.back();
+        if (this.props.isAuthenticated) this.props.history.goBack();
         return (
             <div className="col-sm-6 col-md-4 offset-md-4 sm-offset-3">
                 <h2>Login</h2>

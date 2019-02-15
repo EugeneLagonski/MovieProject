@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import {data} from '../actions'
 
-import {LOADING} from '../constants'
+import {Loading} from './Loading'
 
 import {Card, CardBody, CardSubtitle, CardText, CardTitle} from "reactstrap";
 
@@ -41,7 +41,7 @@ class DirectorDetail extends Component {
                         to be realised
                     </CardText>
                 </CardBody>
-                {this.state.isLoading && LOADING}
+                {this.state.isLoading && <Loading/>}
             </Card>
         )
     }

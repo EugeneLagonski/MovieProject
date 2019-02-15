@@ -4,7 +4,7 @@ import {connect} from "react-redux";
 import {data} from '../actions'
 import PropTypes from "prop-types";
 
-import {LOADING} from "../constants";
+import {Loading} from "./Loading";
 
 import {Badge, Card, CardBody, CardSubtitle, CardTitle, ListGroup, ListGroupItem} from "reactstrap";
 import '../css/scroll.css';
@@ -56,7 +56,7 @@ class MoviesContainer extends Component {
                         )}
                     </ListGroup>
                 </CardBody>
-                {this.state.isLoading && LOADING}
+                {this.state.isLoading && <Loading/>}
             </Card>
         )
     }

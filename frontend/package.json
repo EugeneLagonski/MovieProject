@@ -5,6 +5,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "bootstrap": "^4.2.1",
+    "history": "^4.7.2",
     "js-cookie": "^2.2.0",
     "lodash": "^4.17.11",
     "prop-types": "^15.6.2",

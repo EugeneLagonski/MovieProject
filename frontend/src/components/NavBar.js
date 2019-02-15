@@ -8,10 +8,10 @@ import {auth} from "../actions/";
 import {Navbar, NavbarBrand, Nav, NavItem, NavLink} from 'reactstrap';
 
 
-class MyNavbar extends React.Component {
+class NavBar extends React.Component {
 
     logoutClick = () => {
-        this.props.logout(this.props.token);
+        this.props.logout();
     };
 
     shouldComponentUpdate(nextProps, nextState, nextContext) {
@@ -41,7 +41,7 @@ class MyNavbar extends React.Component {
     }
 }
 
-MyNavbar.propTypes = {
+NavBar.propTypes = {
     logout: PropTypes.func.isRequired,
     errors: PropTypes.array,
     isAuthenticated: PropTypes.bool,
@@ -54,16 +54,15 @@ const mapStateToProps = state => {
     return {
         isAuthenticated: state.auth.isAuthenticated,
         user: state.auth.user,
-        token: state.auth.token
     }
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        logout: (token) => {
-            return dispatch(auth.logout(token));
+        logout: () => {
+            return dispatch(auth.logout());
         }
     };
 };
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(MyNavbar))
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(NavBar))

@@ -1,11 +1,10 @@
-import axios from "axios";
+import {api} from "../api";
 
-import {API_URL} from "../constants";
 import {FETCHING_DATA_FAIL, FETCHING_DATA_SUCCESS} from "./types";
 
 
 export const fetchMoviePage = (page) => dispatch =>
-    axios.get(`${API_URL}/movies/?page=${page || 1}`)
+    api.get(`/movies/?page=${page || 1}`)
         .then(res => {
             page = page || 1;
             console.log('Request success', res);
@@ -33,7 +32,7 @@ export const fetchMoviePage = (page) => dispatch =>
         });
 
 export const fetchDetailMovie = (id) => dispatch =>
-    axios.get(`${API_URL}/movies/${id}`)
+    api.get(`/movies/${id}`)
         .then(res => {
             console.log('Request success', res);
 
@@ -74,7 +73,7 @@ export const fetchDetailMovie = (id) => dispatch =>
         });
 
 export const fetchDetailActor = (id) => dispatch =>
-    axios.get(`${API_URL}/actors/${id}`)
+    api.get(`/actors/${id}`)
         .then(res => {
             console.log('Request success', res);
 
@@ -98,7 +97,7 @@ export const fetchDetailActor = (id) => dispatch =>
         });
 
 export const fetchDetailDirector = (id) => dispatch =>
-    axios.get(`${API_URL}/directors/${id}`)
+    api.get(`/directors/${id}`)
         .then(res => {
             console.log('Request success', res);
 
