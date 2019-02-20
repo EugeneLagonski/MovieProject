@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import {Link} from "react-router-dom";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
-import {auth} from '../actions';
+import {authActions} from '../actions';
 
 
 class RegisterComponent extends Component {
@@ -82,7 +82,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         register: (username, password) => {
-            return dispatch(auth.register(username, password));
+            return dispatch(authActions.register(username, password));
         }
     };
 };

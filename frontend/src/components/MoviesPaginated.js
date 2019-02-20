@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
-import {data} from '../actions'
+import {dataActions} from '../actions'
 
 import MyPagination from "./MyPagination";
 import MoviesPageItems from "./MoviesPageItems";
@@ -49,7 +49,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         fetchMoviePage: (page => {
-            return dispatch(data.fetchMoviePage(page));
+            return dispatch(dataActions.fetchMoviePage(page));
         })
     };
 };

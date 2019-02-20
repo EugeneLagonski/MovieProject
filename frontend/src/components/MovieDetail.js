@@ -1,92 +1,149 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 import {connect} from "react-redux";
-import {data} from '../actions'
+import {dataActions} from '../actions'
 import PropTypes from "prop-types";
 
 import {Loading} from "./Loading";
+import EditMovieForm from "./EditMovieForm";
 
-import {Badge, Card, CardBody, CardSubtitle, CardTitle, ListGroup, ListGroupItem} from "reactstrap";
+import {Badge, Button, Card, CardBody, CardSubtitle, CardTitle, ListGroup, ListGroupItem, Row} from "reactstrap";
 import '../css/scroll.css';
+import '../css/MovieDetail.css'
 
 
-class MoviesContainer extends Component {
+class MoviesDetail extends Component {
 
     state = {
         isLoading: true,
+        isEditing: false,
+        movie: {
+            title: '',
+            actors: {},
+            director: null
+        }
     };
 
 
     componentDidMount() {
-        const {movies, match, fetchDetailMovie} = this.props;
+        const {movies, fetchDetailMovie} = this.props;
+        const id = this.props.match.params.movieId;
 
-        if (movies && movies[match.params.movieId] && !movies[match.params.movieId].actors)
-            fetchDetailMovie(match.params.movieId)
-                .then(() => this.setState({isLoading: false}))
-
+        if (movies && movies[id] && movies[id].actors)
+            this.setState({isLoading: false, movie: movies[id]});
         else {
-            fetchDetailMovie(match.params.movieId)
-                .then(() => this.setState({isLoading: false}))
+            fetchDetailMovie(id)
+                .then(() => {
+                    const movie = this.props.movies[id];
+                    this.setState({isLoading: false, movie: movie})
+                })
         }
     }
+
+    startEdit = () => {
+        this.props.startEdit()
+    };
+
+
+    actorsToForm = (movieActors) => {
+        const {actors} = this.props;
+        return Object.entries(movieActors).map(([id, actor]) => {
+            return {
+                value: id,
+                label: actors[id].name,
+                is_primary: actor.is_primary,
+                character_name: actor.character_name
+            }
+        })
+    };
+
+    handleChange = (e) => {
+        const {name, value} = e.target;
+        this.setState({movie: {...this.state.movie, [name]: value}});
+    };
 
     render() {
         const {directors, movies} = this.props;
         const id = this.props.match.params.movieId;
         const movie = movies && movies[id];
         const {title, director, actors} = movie || {};
-
+        const {isEditing} = this.props;
         return (
-            <Card>
-                <CardBody>
-                    <CardTitle>Movie: {title}</CardTitle>
-                    <CardSubtitle>Director:&ensp;
-                        {directors && directors[director] &&
-                        <Link to={/director/ + director}>{directors[director].name}</Link>}
-                    </CardSubtitle>
+            <div>
+                {isEditing ? <EditMovieForm initialValues={{
+                        title: title,
+                        director: {
+                            value: director,
+                            label: directors[director].name
+                        },
+                        actors: this.actorsToForm(movie.actors),
+                    }}/> :
+                    (<Card className="col-sm-10 col-md-8 offset-md-2 sm-offset-2">
+                        <CardBody>
+                            <form>
+                                <Row>
+                                    <CardTitle className='col-md-8'>Movie:{title}
+                                    </CardTitle>
+                                    <div className='col-md-4'>{isEditing ?
+                                        <span>
+                                <Button size='sm' color='success' onClick={this.submitEdit}>Submit</Button>
+                                <Button size='sm' color='danger' onClick={this.cancelEdit}>Cancel</Button>
+                            </span> :
+                                        <Button size='sm' color='info' onClick={this.startEdit}>Edit</Button>}</div>
+                                </Row>
+                                <CardSubtitle>Director:&ensp;
+                                    {directors && directors[director] &&
+                                    <Link to={/director/ + director}>{directors[director].name}</Link>}
+                                </CardSubtitle>
 
-                    Actors:
-                    <ListGroup className='col-md-4 scroller'>
-                        {actors && Object.entries(actors).map(([id, actor]) =>
-                            <ListGroupItem key={id}>
-                                <Link to={/actor/ + id}>{this.props.actors[id].name}</Link>
-                                {actor.is_primary && <Badge color='secondary'>Primary role</Badge>}
-                                &ensp;as {actor.character_name}
-                            </ListGroupItem>
-                        )}
-                    </ListGroup>
-                </CardBody>
-                {this.state.isLoading && <Loading/>}
-            </Card>
-        )
+                                Actors:
+                                <ListGroup className='scroller'>
+                                    {actors && Object.entries(actors).map(([id, actor]) =>
+                                        <ListGroupItem key={id}>
+                                            <Link to={/actor/ + id}>{this.props.actors[id].name}</Link>
+                                            {actor.is_primary && <Badge color='secondary'>Primary role</Badge>}
+                                            &ensp;as {actor.character_name}
+                                        </ListGroupItem>
+                                    )}
+                                </ListGroup>
+                            </form>
+                        </CardBody>
+                        {this.state.isLoading && <Loading/>}
+                    </Card>)
+
+                }</div>)
     }
 }
 
 
-MoviesContainer
-    .propTypes = {
+MoviesDetail.propTypes = {
     fetchDetailMovie: PropTypes.func.isRequired,
+    startEdit: PropTypes.func.isRequired,
     movies: PropTypes.object,
     actors: PropTypes.object,
     directors: PropTypes.object,
 };
 
-const
-    mapStateToProps = state => {
-        return {
-            movies: state.data.movies,
-            actors: state.data.actors,
-            directors: state.data.directors,
-        };
+const mapStateToProps = state => {
+    return {
+        isEditing: state.data.isEditing,
+        movies: state.data.movies,
+        actors: state.data.actors,
+        directors: state.data.directors,
     };
+};
 
-const
-    mapDispatchToProps = dispatch => {
-        return {
-            fetchDetailMovie: (id) => {
-                return dispatch(data.fetchDetailMovie(id));
-            }
-        };
+const mapDispatchToProps = dispatch => {
+    return {
+        fetchDetailMovie: (id) => {
+            return dispatch(dataActions.fetchDetailMovie(id));
+        },
+        startEdit: () => {
+            return dispatch(dataActions.startEdit())
+        },
     };
+};
 
-export default connect(mapStateToProps, mapDispatchToProps)(MoviesContainer);
+MoviesDetail = connect(mapStateToProps, mapDispatchToProps)(MoviesDetail);
+
+export default MoviesDetail

@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {Link} from "react-router-dom";
 import {connect} from "react-redux";
-import {auth} from '../actions';
+import {authActions} from '../actions';
 import PropTypes from 'prop-types';
 
 
@@ -81,7 +81,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         login: (username, password) => {
-            return dispatch(auth.login(username, password));
+            return dispatch(authActions.login(username, password));
         }
     };
 };

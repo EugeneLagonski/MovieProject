@@ -1,8 +1,9 @@
 import _ from "lodash"
-import {FETCHING_DATA_FAIL, FETCHING_DATA_SUCCESS} from "../actions/types";
+import {FETCHING_DATA_FAIL, FETCHING_DATA_SUCCESS, FINISH_EDIT, START_EDIT} from "../actions/types";
 
 
 export const initialState = {
+    isEditing: false,
     movies: {},
     actors: {},
     directors: {},
@@ -23,6 +24,11 @@ export const dataReducer = (state = initialState, action) => {
         case FETCHING_DATA_FAIL:
             return {...state};
 
+        case START_EDIT:
+            return {...state, isEditing: true};
+
+        case FINISH_EDIT:
+            return {...state, isEditing: false};
         default:
             return state;
     }

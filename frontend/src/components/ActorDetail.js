@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
-import {data} from '../actions'
+import {dataActions} from '../actions'
 
 import {Loading} from './Loading'
 
@@ -61,7 +61,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         fetchDetailActor: (id) => {
-            return dispatch(data.fetchDetailActor(id));
+            return dispatch(dataActions.fetchDetailActor(id));
         }
     };
 };

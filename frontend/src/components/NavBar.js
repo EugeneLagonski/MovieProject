@@ -3,7 +3,7 @@ import {Link} from 'react-router-dom';
 import {withRouter} from "react-router";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
-import {auth} from "../actions/";
+import {authActions} from "../actions/";
 
 import {Navbar, NavbarBrand, Nav, NavItem, NavLink} from 'reactstrap';
 
@@ -60,7 +60,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         logout: () => {
-            return dispatch(auth.logout());
+            return dispatch(authActions.logout());
         }
     };
 };

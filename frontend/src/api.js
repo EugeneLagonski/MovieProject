@@ -1,5 +1,5 @@
 import axios from 'axios'
-import {auth} from './actions'
+import {authActions} from './actions'
 import {history} from "./index";
 
 export const ROUTE_404 = '/error_404';
@@ -25,15 +25,19 @@ api.interceptors.response.use(response => {
     error => {
         switch (error.response.status) {
             case 401:
-                auth.logout();
+                console.log('HTTP 401');
+                authActions.logout();
                 break;
             case 403:
+                console.log('HTTP 403');
                 //reload user info
                 break;
             case 404:
+                console.log('HTTP 404');
                 history.push(ROUTE_404);
                 break;
             case 500:
+                console.log('HTTP 500');
                 history.push(ROUTE_500);
                 break;
         }
