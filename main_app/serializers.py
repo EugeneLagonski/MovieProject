@@ -58,10 +58,11 @@ class MovieDetailSerializer(serializers.ModelSerializer):
     def update(self, instance: models.Movie, validated_data):
         try:
             if 'actors' in self.initial_data:
+
                 actors = self.initial_data.get('actors')
                 actors_id_list = list(instance.actors.values_list('id', flat=True))
                 for actor in actors:
-                    actor_id = actor.get('actor_id')
+                    actor_id = int(actor.get('actor_id'))
                     actor_instance = models.Actor.objects.get(pk=actor_id)
                     character_name = actor.get('character_name')
                     is_primary = actor.get('is_primary')

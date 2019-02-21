@@ -13,7 +13,8 @@ services:
     depends_on:
       - db
   frontend:
-    build: ./frontend
+    image: node
+    working_dir: /frontend
     command: npm start
     volumes:
       - ./frontend:/frontend

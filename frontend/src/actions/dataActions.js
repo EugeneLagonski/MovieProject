@@ -1,5 +1,5 @@
 import {api} from "../api";
-
+import {detailMovieResponseToState, formValuesToRequest} from "../utils/dataUtils";
 import {FETCHING_DATA_FAIL, FETCHING_DATA_SUCCESS, FINISH_EDIT, START_EDIT} from "./types";
 
 
@@ -32,39 +32,12 @@ export const fetchMoviePage = (page) => dispatch =>
         });
 
 export const fetchDetailMovie = (id) => dispatch =>
-    api.get(`/movies/${id}`)
+    api.get(`/movies/${id}/`)
         .then(res => {
             console.log('Request success', res);
-
-            const movie = res.data;
-            const actors = {};
-            const directors = {[movie.director]: {name: movie.director_name}};
-
-            const _actors = movie.actors.reduce((obj, actor) => {
-                actors[actor.actor_id] = {name: actor.name};
-                obj[actor.actor_id] = {
-                    character_name: actor.character_name,
-                    is_primary: actor.is_primary
-                };
-                return obj;
-            }, {});
-
-            const movies = {
-                [movie.id]: {
-                    title: movie.title,
-                    director: movie.director,
-                    actors: _actors
-                }
-            };
-
             dispatch({
-                type: FETCHING_DATA_SUCCESS, data: {
-                    movies: movies,
-                    actors: actors,
-                    directors: directors
-                }
+                type: FETCHING_DATA_SUCCESS, data: detailMovieResponseToState(res.data)
             });
-
         })
         .catch((error) => {
             error = JSON.stringify(error);
@@ -73,7 +46,7 @@ export const fetchDetailMovie = (id) => dispatch =>
         });
 
 export const fetchDetailActor = (id) => dispatch =>
-    api.get(`/actors/${id}`)
+    api.get(`/actors/${id}/`)
         .then(res => {
             console.log('Request success', res);
 
@@ -97,7 +70,7 @@ export const fetchDetailActor = (id) => dispatch =>
         });
 
 export const fetchDetailDirector = (id) => dispatch =>
-    api.get(`/directors/${id}`)
+    api.get(`/directors/${id}/`)
         .then(res => {
             console.log('Request success', res);
 
@@ -167,4 +140,22 @@ export const fetchDirectorsPage = (page = 1) => dispatch => {
             console.log('Request failed', error);
             dispatch({type: FETCHING_DATA_FAIL})
         })
+};
+
+export const updateMovie = (id, values) => dispatch => {
+    const data = formValuesToRequest(id, values);
+    console.log(data);
+    console.log();
+    return api.put(`/movies/${id}/`, data)
+        .then(res => {
+            console.log('Request success', res);
+            dispatch({
+                type: FETCHING_DATA_SUCCESS, data: detailMovieResponseToState(res.data)
+            });
+        })
+        .catch((error) => {
+            error = JSON.stringify(error);
+            console.log('Request failed', error);
+            dispatch({type: FETCHING_DATA_FAIL})
+        });
 };

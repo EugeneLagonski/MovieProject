@@ -5,7 +5,7 @@ import {dataActions} from '../actions'
 import PropTypes from "prop-types";
 
 import {Loading} from "./Loading";
-import EditMovieForm from "./EditMovieForm";
+import EditMovie from "./EditMovie";
 
 import {Badge, Button, Card, CardBody, CardSubtitle, CardTitle, ListGroup, ListGroupItem, Row} from "reactstrap";
 import '../css/scroll.css';
@@ -40,11 +40,6 @@ class MoviesDetail extends Component {
         }
     }
 
-    startEdit = () => {
-        this.props.startEdit()
-    };
-
-
     actorsToForm = (movieActors) => {
         const {actors} = this.props;
         return Object.entries(movieActors).map(([id, actor]) => {
@@ -57,39 +52,38 @@ class MoviesDetail extends Component {
         })
     };
 
-    handleChange = (e) => {
-        const {name, value} = e.target;
-        this.setState({movie: {...this.state.movie, [name]: value}});
+    handleSubmit = (values) => {
+        console.log('values', values);
+        const {updateMovie, finishEdit} = this.props;
+        const id = this.props.match.params.movieId;
+        updateMovie(id, values);
+        finishEdit();
     };
 
     render() {
-        const {directors, movies} = this.props;
+        const {directors, movies, startEdit, finishEdit, isEditing} = this.props;
         const id = this.props.match.params.movieId;
         const movie = movies && movies[id];
         const {title, director, actors} = movie || {};
-        const {isEditing} = this.props;
         return (
             <div>
-                {isEditing ? <EditMovieForm initialValues={{
+                {isEditing ? <EditMovie initialValues={{
                         title: title,
                         director: {
                             value: director,
                             label: directors[director].name
                         },
                         actors: this.actorsToForm(movie.actors),
-                    }}/> :
+                    }} onSubmit={this.handleSubmit} onCancel={finishEdit}/> :
                     (<Card className="col-sm-10 col-md-8 offset-md-2 sm-offset-2">
                         <CardBody>
                             <form>
                                 <Row>
                                     <CardTitle className='col-md-8'>Movie:{title}
                                     </CardTitle>
-                                    <div className='col-md-4'>{isEditing ?
-                                        <span>
-                                <Button size='sm' color='success' onClick={this.submitEdit}>Submit</Button>
-                                <Button size='sm' color='danger' onClick={this.cancelEdit}>Cancel</Button>
-                            </span> :
-                                        <Button size='sm' color='info' onClick={this.startEdit}>Edit</Button>}</div>
+                                    <div className='col-md-4'>
+                                        <Button size='sm' color='info' onClick={startEdit}>Edit</Button>
+                                    </div>
                                 </Row>
                                 <CardSubtitle>Director:&ensp;
                                     {directors && directors[director] &&
@@ -119,6 +113,8 @@ class MoviesDetail extends Component {
 MoviesDetail.propTypes = {
     fetchDetailMovie: PropTypes.func.isRequired,
     startEdit: PropTypes.func.isRequired,
+    finishEdit: PropTypes.func.isRequired,
+    updateMovie: PropTypes.func.isRequired,
     movies: PropTypes.object,
     actors: PropTypes.object,
     directors: PropTypes.object,
@@ -141,6 +137,12 @@ const mapDispatchToProps = dispatch => {
         startEdit: () => {
             return dispatch(dataActions.startEdit())
         },
+        finishEdit: () => {
+            return dispatch(dataActions.finishEdit())
+        },
+        updateMovie: (id, values) => {
+            return dispatch(dataActions.updateMovie(id, values))
+        }
     };
 };
 

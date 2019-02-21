@@ -28,11 +28,11 @@ SECRET_KEY = ')v$8x4t@#bc*s-vi!$)1&ch%7ke2m!1ctn_s0$jm#-q^5ul76^'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['0.0.0.0', 'localhost', '172.17.0.1', 'api.localhost', 'api.localexample.com', 'localexample.com']
+ALLOWED_HOSTS = ['0.0.0.0', 'localhost', '172.17.0.1', 'api.localhost', 'api.localexample.com', 'localexample.com',
+                 '274e39cf.ngrok.io']
 
-# CORS_ORIGIN_ALLOW_ALL = True
-CORS_ORIGIN_WHITELIST = ['localexample.com', '.localexample.com']
-
+CORS_ORIGIN_ALLOW_ALL = True
+# CORS_ORIGIN_WHITELIST = ['localexample.com', '.localexample.com, localhost:3000', 'localhost']
 
 # Application definition
 INSTALLED_APPS = [
