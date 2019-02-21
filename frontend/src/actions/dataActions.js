@@ -96,52 +96,6 @@ export const startEdit = () => dispatch => dispatch({type: START_EDIT});
 
 export const finishEdit = () => dispatch => dispatch({type: FINISH_EDIT});
 
-export const fetchActorsPage = (page = 1) => dispatch => {
-    return api(`/actors/?page=${page}`)
-        .then(res => {
-            console.log('Request success', res);
-
-            const actors = res.data.results.reduce((obj, actor) => {
-                return {...obj, [actor.id]: {name: actor.name}}
-            }, {});
-
-            dispatch({
-                type: FETCHING_DATA_SUCCESS, data: {
-                    actors: actors,
-                }
-            });
-            return res;
-        })
-        .catch((error) => {
-            error = JSON.stringify(error);
-            console.log('Request failed', error);
-            dispatch({type: FETCHING_DATA_FAIL})
-        });
-};
-
-export const fetchDirectorsPage = (page = 1) => dispatch => {
-    return api(`/directors/?page=${page}`)
-        .then(res => {
-            console.log('Request success', res);
-
-            const directors = res.data.results.reduce((obj, director) => {
-                return {...obj, [director.id]: {name: director.name}}
-            }, {});
-
-            dispatch({
-                type: FETCHING_DATA_SUCCESS, data: {
-                    directors: directors,
-                }
-            });
-            return res;
-        })
-        .catch((error) => {
-            error = JSON.stringify(error);
-            console.log('Request failed', error);
-            dispatch({type: FETCHING_DATA_FAIL})
-        })
-};
-
 export const updateMovie = (id, values) => dispatch => {
     const data = formValuesToRequest(id, values);
     console.log(data);

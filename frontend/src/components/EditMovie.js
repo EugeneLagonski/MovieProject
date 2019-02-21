@@ -79,6 +79,9 @@ const renderActors = ({fields}) => (
                     onClick={() => fields.remove(index)}>Remove Actor</Button>
             </Row>
         )}
+        <Button onClick={() => fields.push()}>
+        Add Actor
+      </Button>
     </div>
 );
 
