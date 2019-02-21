@@ -61,10 +61,8 @@ class MovieDetailSerializer(serializers.ModelSerializer):
                 actors = self.initial_data.get('actors')
                 actors_id_list = list(instance.actors.values_list('id', flat=True))
                 for actor in actors:
-
                     actor_id = int(actor.get('actor_id'))
                     actor_instance = models.Actor.objects.get(pk=actor_id)
-
                     character_name = actor.get('character_name')
                     is_primary = actor.get('is_primary', False)
                     if actor_id in actors_id_list:
@@ -77,6 +75,9 @@ class MovieDetailSerializer(serializers.ModelSerializer):
                     else:
                         models.Role(actor=actor_instance, movie=instance, character_name=character_name,
                                     is_primary=is_primary).save()
+                for actor_id in actors_id_list:
+                    models.Role.objects.get(actor_id=actor_id, movie=instance).delete()
+
                 models.Role.objects.filter(actor_id__in=actors_id_list).delete()
             title = validated_data['title']
             director_id = validated_data['director']['id']

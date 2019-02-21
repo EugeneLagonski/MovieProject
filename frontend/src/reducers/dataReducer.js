@@ -19,7 +19,7 @@ export const initialState = {
 export const dataReducer = (state = initialState, action) => {
     switch (action.type) {
         case FETCHING_DATA_SUCCESS:
-            return _.defaultsDeep(action.data, state);
+            return action.mode === 'NO_DEEP'?{...state, ...action.data} :_.defaultsDeep(action.data, state);
 
         case FETCHING_DATA_FAIL:
             return {...state};

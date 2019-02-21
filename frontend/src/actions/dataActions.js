@@ -104,7 +104,7 @@ export const updateMovie = (id, values) => dispatch => {
         .then(res => {
             console.log('Request success', res);
             dispatch({
-                type: FETCHING_DATA_SUCCESS, data: detailMovieResponseToState(res.data)
+                type: FETCHING_DATA_SUCCESS, data: detailMovieResponseToState(res.data), mode: 'NO_DEEP'
             });
         })
         .catch((error) => {
